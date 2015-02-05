@@ -21,6 +21,7 @@ Instructions on how to compile:
 - Use Visual Studio 2010 or later
 - Open project in Visual Studio
 - Rebuild & run
+
 Tip: You can easily create your own bot software by reusing this code. NiceHashBotLib is the core of everything - modifications of this library should not be needed. Examine NiceHashBot project to see how NiceHashBotLib is used. You can create your own bot with little coding knowledge by just calling certain methods of OrderInstance class such as 'SetMaximalPrice', 'SetLimit' and 'Stop'. With these methods you have full control of what is happening with the order - NiceHashBotLib takes care of evaluating current orders and adjusting lowest possible price.
 
 
