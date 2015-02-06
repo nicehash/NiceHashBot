@@ -144,12 +144,13 @@ namespace NiceHashBotLib
         /// </summary>
         /// <param name="ServiceLocation">Service location; 0 for NiceHash, 1 for WestHash.</param>
         /// <param name="Algorithm">Algorithm number.</param>
+        /// <param name="ForceReCache">Set this to true to recache order list.</param>
         /// <returns>Array list of orders.</returns>
-        public static List<Order> GetAllOrders(int ServiceLocation, int Algorithm)
+        public static List<Order> GetAllOrders(int ServiceLocation, int Algorithm, bool ForceReCache)
         {
             lock (CacheLock)
             {
-                if (CachedOList[ServiceLocation, Algorithm] == null || (CachedOList[ServiceLocation, Algorithm].ObtainTime + TimeSpan.FromSeconds(29.0) < DateTime.Now))
+                if (ForceReCache || CachedOList[ServiceLocation, Algorithm] == null || (CachedOList[ServiceLocation, Algorithm].ObtainTime + TimeSpan.FromSeconds(29.0) < DateTime.Now))
                 {
                     CachedOList[ServiceLocation, Algorithm] = new CachedOrderList();
                     CachedOList[ServiceLocation, Algorithm].OrderList = GetOrders(ServiceLocation, Algorithm, "orders.get", false);

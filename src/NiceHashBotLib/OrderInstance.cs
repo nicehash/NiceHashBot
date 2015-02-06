@@ -123,19 +123,24 @@ namespace NiceHashBotLib
                    
                 lock (this)
                 {
+                    bool NewOrder = false;
+
                     // Verify, if we have order.
                     if (OrderID == 0)
                     {
                         // Need to create order.
                         OrderID = APIWrapper.OrderCreate(ServiceLocation, Algorithm, StartingAmount, StartingPrice, StartLimit, PoolData);
                         if (OrderID > 0)
+                        {
+                            NewOrder = true;
                             LibConsole.WriteLine(LibConsole.TEXT_TYPE.INFO, "Created new order #" + OrderID.ToString());
+                        }
                     }
 
                     if (OrderID > 0)
                     {
                         // Get all orders.
-                        List<Order> AllOrders = APIWrapper.GetAllOrders(ServiceLocation, Algorithm);
+                        List<Order> AllOrders = APIWrapper.GetAllOrders(ServiceLocation, Algorithm, NewOrder);
                         if (AllOrders != null)
                         {
                             // Find our order.
