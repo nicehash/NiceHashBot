@@ -2,8 +2,13 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NiceHashBot", "NiceHashBot\NiceHashBot.csproj", "{74BB3FF1-4FA4-4346-A254-873152EB9B6C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7C9EAB28-E50A-4E7B-9FF7-E964B60C5276} = {7C9EAB28-E50A-4E7B-9FF7-E964B60C5276}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NiceHashBotLib", "NiceHashBotLib\NiceHashBotLib.csproj", "{B5B243E4-0497-42CB-AFBF-A4ED3B4343D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandlerExample", "HandlerExample\HandlerExample.csproj", "{7C9EAB28-E50A-4E7B-9FF7-E964B60C5276}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +40,16 @@ Global
 		{B5B243E4-0497-42CB-AFBF-A4ED3B4343D6}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{B5B243E4-0497-42CB-AFBF-A4ED3B4343D6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B5B243E4-0497-42CB-AFBF-A4ED3B4343D6}.Release|x86.ActiveCfg = Release|Any CPU
+		{7C9EAB28-E50A-4E7B-9FF7-E964B60C5276}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C9EAB28-E50A-4E7B-9FF7-E964B60C5276}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C9EAB28-E50A-4E7B-9FF7-E964B60C5276}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7C9EAB28-E50A-4E7B-9FF7-E964B60C5276}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7C9EAB28-E50A-4E7B-9FF7-E964B60C5276}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7C9EAB28-E50A-4E7B-9FF7-E964B60C5276}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C9EAB28-E50A-4E7B-9FF7-E964B60C5276}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C9EAB28-E50A-4E7B-9FF7-E964B60C5276}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7C9EAB28-E50A-4E7B-9FF7-E964B60C5276}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7C9EAB28-E50A-4E7B-9FF7-E964B60C5276}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

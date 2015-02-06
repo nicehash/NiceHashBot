@@ -79,7 +79,7 @@ namespace NiceHashBot
             else
             {
                 linkLabel1.Text = "Hide advanced options";
-                this.Size = new Size(this.Size.Width, 315);
+                this.Size = new Size(this.Size.Width, 340);
             }
 
             AdvancedOptionsShown = !AdvancedOptionsShown;
@@ -102,7 +102,7 @@ namespace NiceHashBot
 
             if (AdvancedOptionsShown)
             {
-                OrderContainer.Add(comboBox1.SelectedIndex, comboBox2.SelectedIndex, MaxPrice, Limit, Pools[comboBox3.SelectedIndex], OrderID, StartPrice, StartAmount);
+                OrderContainer.Add(comboBox1.SelectedIndex, comboBox2.SelectedIndex, MaxPrice, Limit, Pools[comboBox3.SelectedIndex], OrderID, StartPrice, StartAmount, textBox1.Text);
             }
             else
             {
@@ -110,6 +110,18 @@ namespace NiceHashBot
             }
 
             Close();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog OFD = new OpenFileDialog();
+            OFD.Filter = "CSharp dynamic link library|*.dll";
+            OFD.Multiselect = false;
+            OFD.InitialDirectory = Application.StartupPath;
+            if (OFD.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                textBox1.Text = OFD.FileName;
+            }
         }
     }
 }

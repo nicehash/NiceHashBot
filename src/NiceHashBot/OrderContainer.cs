@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Reflection;
+using System.Windows.Forms;
 using NiceHashBotLib;
 using Newtonsoft.Json;
 
@@ -17,12 +19,16 @@ namespace NiceHashBot
         public Pool PoolData;
         public double StartingPrice;
         public double StartingAmount;
+        public string HandlerDLL;
 
         [JsonIgnore]
         public Order OrderStats;
 
         [JsonIgnore]
         private OrderInstance LinkedInstance;
+
+        [JsonIgnore]
+        private MethodInfo HandlerMethod;
 
         private static List<OrderContainer> OrderList;
 
@@ -40,9 +46,10 @@ namespace NiceHashBot
             ID = 0;
             StartingAmount = 0.01;
             StartingPrice = 0.001;
+            HandlerDLL = "";
         }
 
-        public OrderContainer(int SL, int Algo, double Price, double SpeedLimit, Pool PoolInfo, int OrderID, double StartPrice, double StartAmount)
+        public OrderContainer(int SL, int Algo, double Price, double SpeedLimit, Pool PoolInfo, int OrderID, double StartPrice, double StartAmount, string HandlerFile)
         {
             ServiceLocation = SL;
             Algorithm = Algo;
@@ -52,6 +59,7 @@ namespace NiceHashBot
             ID = OrderID;
             StartingAmount = StartAmount;
             StartingPrice = StartPrice;
+            HandlerDLL = HandlerFile;
         }
 
 
@@ -59,6 +67,20 @@ namespace NiceHashBot
         {
             if (LinkedInstance != null) return;
             LinkedInstance = new OrderInstance(ServiceLocation, Algorithm, MaxPrice, Limit, PoolData, ID, StartingPrice, StartingAmount);
+
+            if (HandlerDLL.Length > 0)
+            {
+                try
+                {
+                    Assembly ASS = Assembly.LoadFrom(HandlerDLL);
+                    Type T = ASS.GetType("HandlerClass");
+                    HandlerMethod = T.GetMethod("HandleOrder");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
 
@@ -92,6 +114,27 @@ namespace NiceHashBot
             {
                 ID = OrderStats.ID;
                 Commit();
+            }
+
+            if (HandlerMethod != null)
+            {
+                object[] Parameters = new object[3];
+                Parameters[0] = OrderStats;
+                Parameters[1] = MaxPrice;
+                Parameters[2] = Limit;
+                HandlerMethod.Invoke(null, Parameters);
+                if ((double)Parameters[1] != MaxPrice)
+                {
+                    MaxPrice = (double)Parameters[1];
+                    if (MaxPrice < 0) MaxPrice = 0.001;
+                    LinkedInstance.SetMaximalPrice(MaxPrice);
+                }
+                if ((double)Parameters[2] != Limit)
+                {
+                    Limit = (double)Parameters[2];
+                    if (Limit < 0) Limit = 0;
+                    LinkedInstance.SetLimit(Limit);
+                }
             }
         }
 
@@ -150,9 +193,9 @@ namespace NiceHashBot
         }
 
 
-        public static void Add(int SL, int Algo, double Price, double SpeedLimit, Pool PoolInfo, int OrderID, double StartPrice, double StartAmount)
+        public static void Add(int SL, int Algo, double Price, double SpeedLimit, Pool PoolInfo, int OrderID, double StartPrice, double StartAmount, string HandlerFile)
         {
-            OrderContainer OC = new OrderContainer(SL, Algo, Price, SpeedLimit, PoolInfo, OrderID, StartPrice, StartAmount);
+            OrderContainer OC = new OrderContainer(SL, Algo, Price, SpeedLimit, PoolInfo, OrderID, StartPrice, StartAmount, HandlerFile);
             OC.Launch();
             OrderList.Add(OC);
             Commit();

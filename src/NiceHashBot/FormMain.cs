@@ -53,6 +53,8 @@ namespace NiceHashBot
 
         private void TimerRefresh_Tick(object sender, EventArgs e)
         {
+            if (!APIWrapper.ValidAuthorization) return;
+
             OrderContainer[] Orders = OrderContainer.GetAll();
             int Selected = -1;
             if (listView1.SelectedIndices.Count > 0)
