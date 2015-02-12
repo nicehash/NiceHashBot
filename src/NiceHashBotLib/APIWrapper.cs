@@ -25,18 +25,25 @@ namespace NiceHashBotLib
         /// </summary>
         public readonly static string[] SERVICE_NAME = { "NiceHash", "WestHash" };
 
-
+        /// <summary>
+        /// Names for algorithms.
+        /// </summary>
         public readonly static string[] ALGORITHM_NAME = { "Scrypt", "SHA256", "Scrypt-A.-Nf.", "X11", "X13", "Keccak", "X15", "Nist5", "NeoScrypt", "Lyra2RE" };
 
         /// <summary>
         /// Total number of algorithms.
         /// </summary>
-        public readonly static int NumberOfAlgorithms = 10;
+        public readonly static int NUMBER_OF_ALGORITHMS = 10;
 
         /// <summary>
         /// Price decrease steps for all algorithms.
         /// </summary>
-        public readonly static double[] PriceDecreaseSteps = { -0.001, -0.0001, -0.002, -0.001, -0.001, -0.0001, -0.001, -0.001, -0.01, -0.002 };
+        public readonly static double[] PRICE_DECREASE_STEP = { -0.001, -0.0001, -0.002, -0.001, -0.001, -0.0001, -0.001, -0.001, -0.01, -0.002 };
+
+        /// <summary>
+        /// Price decrase interval - it is 10 minutes.
+        /// </summary>
+        public readonly static TimeSpan PRICE_DECREASE_INTERVAL = new TimeSpan(0, 10, 1);
 
         /// <summary>
         /// API ID.
@@ -63,8 +70,8 @@ namespace NiceHashBotLib
         #region PRIVATE_PROPERTIES
 
         private static object CacheLock = new object();
-        private static CachedOrderList[,] CachedOList = new CachedOrderList[SERVICE_LOCATION.Length, NumberOfAlgorithms];
-        private static CachedStats[,] CachedSList = new CachedStats[SERVICE_LOCATION.Length, NumberOfAlgorithms];
+        private static CachedOrderList[,] CachedOList = new CachedOrderList[SERVICE_LOCATION.Length, NUMBER_OF_ALGORITHMS];
+        private static CachedStats[,] CachedSList = new CachedStats[SERVICE_LOCATION.Length, NUMBER_OF_ALGORITHMS];
 
         #endregion
 

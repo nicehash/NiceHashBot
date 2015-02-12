@@ -20,6 +20,7 @@ namespace NiceHashBotLib
         private Order LastOrderStats;
         private double StartingPrice;
         private double StartingAmount;
+        private DateTime DecreaseTime;
 
         #endregion
 
@@ -47,6 +48,7 @@ namespace NiceHashBotLib
             OrderID = ID;
             StartingPrice = Price;
             StartingAmount = Amount;
+            DecreaseTime = DateTime.Now - APIWrapper.PRICE_DECREASE_INTERVAL;
 
             OrderThread = new Thread(ThreadRun);
             OrderThread.Start();
@@ -233,8 +235,13 @@ namespace NiceHashBotLib
 
         private bool IncreasePrice(Order MyOrder, Order[] AllOrders, double MinimalPrice)
         {
-            // Do not make price higher if we are already on top of the list
-            if (AllOrders[0] == MyOrder) return false;
+            // Do not make price higher if we are already on top of the list (first alive).
+            foreach (Order O in AllOrders)
+            {
+                if (!O.Alive) continue;
+                if (O == MyOrder) return false;
+                else break;
+            }
 
             // Do not increase price, if we already have price higher or equal compared to minimal price.
             if (MyOrder.Price >= MinimalPrice) return false;
@@ -245,6 +252,8 @@ namespace NiceHashBotLib
                 LibConsole.WriteLine(LibConsole.TEXT_TYPE.INFO, "Setting price order #" + MyOrder.ID + " to " + MinimalPrice.ToString("F4"));
                 double NewP = MyOrder.SetPrice(MinimalPrice);
                 if (NewP > 0) MyOrder.Price = NewP;
+
+                return true;
             }
             else if (MyOrder.Price < MaxPrice)
             {
@@ -252,20 +261,30 @@ namespace NiceHashBotLib
                 LibConsole.WriteLine(LibConsole.TEXT_TYPE.INFO, "Setting price order #" + MyOrder.ID + " to " + MaxPrice.ToString("F4"));
                 double NewP = MyOrder.SetPrice(MaxPrice);
                 if (NewP > 0) MyOrder.Price = NewP;
+
+                return true;
             }
 
-            return true; // Return true anyway, we don't want to check for price decrease, because we should increase the price.
+            return false;
         }
 
 
         private void DecreasePrice(Order MyOrder, Order[] AllOrders, double MinimalPrice)
         {
-            // Decrease only in case if we are still above or equal to minimal price.
-            if (MyOrder.Price + APIWrapper.PriceDecreaseSteps[MyOrder.Algorithm] >= MinimalPrice)
+            // Check time if decrase is possible.
+            if (DecreaseTime + APIWrapper.PRICE_DECREASE_INTERVAL > DateTime.Now) return;
+
+            // Decrease only in case if we are still above or equal to minimal price. Or if we are above maximal price.
+            if (MyOrder.Price + APIWrapper.PRICE_DECREASE_STEP[MyOrder.Algorithm] >= MinimalPrice ||
+                MyOrder.Price > MaxPrice)
             {
-                LibConsole.WriteLine(LibConsole.TEXT_TYPE.INFO, "Decreasing price order #" + MyOrder.ID);
                 double NewP = MyOrder.SetPriceDecrease();
-                if (NewP > 0) MyOrder.Price = NewP;
+                if (NewP > 0)
+                {
+                    MyOrder.Price = NewP;
+                    LibConsole.WriteLine(LibConsole.TEXT_TYPE.INFO, "Decreasing price order #" + MyOrder.ID + " to " + NewP.ToString("F4"));
+                    DecreaseTime = DateTime.Now;
+                }
             }
         }
 
