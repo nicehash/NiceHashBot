@@ -63,6 +63,12 @@ namespace NiceHashBotLib
         public ulong EndTime;
 
         /// <summary>
+        /// Type of the order (0 = standard, 1 = fixed)
+        /// </summary>
+        [JsonProperty(PropertyName = "type")]
+        public int OrderType;
+
+        /// <summary>
         /// Service location (0 for NiceHash, 1 for WestHash).
         /// </summary>
         [JsonIgnore]

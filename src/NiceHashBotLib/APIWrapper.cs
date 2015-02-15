@@ -13,7 +13,7 @@ namespace NiceHashBotLib
         /// <summary>
         /// API Version compatible with.
         /// </summary>
-        public readonly static string API_VERSION_COMPATIBLE = "1.0.9";
+        public readonly static string API_VERSION_COMPATIBLE = "1.0.10";
 
         /// <summary>
         /// URLs for NiceHash services.

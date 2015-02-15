@@ -236,9 +236,11 @@ namespace NiceHashBotLib
         private bool IncreasePrice(Order MyOrder, Order[] AllOrders, double MinimalPrice)
         {
             // Do not make price higher if we are already on top of the list (first alive).
+            // Consider fixed orders.
             foreach (Order O in AllOrders)
             {
                 if (!O.Alive) continue;
+                if (O.OrderType == 1) continue;
                 if (O == MyOrder) return false;
                 else break;
             }
