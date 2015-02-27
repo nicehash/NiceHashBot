@@ -20,7 +20,9 @@ namespace NiceHashBotLib
 
         public static void OpenConsole()
         {
+#if !MONO
             AllocConsole();
+#endif
         }
 
         public static void WriteLine(TEXT_TYPE Type, string Text)
