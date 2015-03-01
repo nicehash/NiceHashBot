@@ -28,17 +28,17 @@ namespace NiceHashBotLib
         /// <summary>
         /// Names for algorithms.
         /// </summary>
-        public readonly static string[] ALGORITHM_NAME = { "Scrypt", "SHA256", "Scrypt-A.-Nf.", "X11", "X13", "Keccak", "X15", "Nist5", "NeoScrypt", "Lyra2RE" };
+        public readonly static string[] ALGORITHM_NAME = { "Scrypt", "SHA256", "Scrypt-A.-Nf.", "X11", "X13", "Keccak", "X15", "Nist5", "NeoScrypt", "Lyra2RE", "WhirlpoolX" };
 
         /// <summary>
         /// Total number of algorithms.
         /// </summary>
-        public readonly static int NUMBER_OF_ALGORITHMS = 10;
+        public readonly static int NUMBER_OF_ALGORITHMS = 11;
 
         /// <summary>
         /// Price decrease steps for all algorithms.
         /// </summary>
-        public readonly static double[] PRICE_DECREASE_STEP = { -0.001, -0.0001, -0.002, -0.001, -0.001, -0.0001, -0.001, -0.001, -0.01, -0.002 };
+        public readonly static double[] PRICE_DECREASE_STEP = { -0.001, -0.0001, -0.002, -0.001, -0.001, -0.0001, -0.001, -0.001, -0.01, -0.002, -0.0001 };
 
         /// <summary>
         /// Price decrase interval - it is 10 minutes.
