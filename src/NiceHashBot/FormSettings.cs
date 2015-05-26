@@ -14,6 +14,11 @@ namespace NiceHashBot
         public string Key { get { return textBox1.Text; } internal set { textBox1.Text = value; } }
         public string TwoFASecret { get { return textBox2.Text; } internal set { textBox2.Text = value; } }
 
+        public string ProxyHost { get { return textBox3.Text; } internal set { textBox3.Text = value; } }
+        public int ProxyPort { get { return decimal.ToInt32(numericUpDown2.Value); } internal set { numericUpDown2.Value = value; } }
+        public string ProxyUsername { get { return textBox4.Text; } internal set { textBox4.Text = value; } }
+        public string ProxyPassword { get { return textBox5.Text; } internal set { textBox5.Text = value; } }
+
         public FormSettings(SettingsContainer OldSettings)
         {
             InitializeComponent();
@@ -21,6 +26,10 @@ namespace NiceHashBot
             this.ID = OldSettings.APIID;
             this.Key = OldSettings.APIKey;
             this.TwoFASecret = OldSettings.TwoFactorSecret;
+            this.ProxyHost = OldSettings.ProxyHost;
+            this.ProxyPort = OldSettings.ProxyPort;
+            this.ProxyUsername = OldSettings.ProxyUsername;
+            this.ProxyPassword = OldSettings.ProxyPassword;
         }
 
         private void button1_Click(object sender, EventArgs e)

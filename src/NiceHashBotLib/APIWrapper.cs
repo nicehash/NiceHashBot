@@ -65,6 +65,11 @@ namespace NiceHashBotLib
         /// </summary>
         public static bool ValidAuthorization;
 
+        /// <summary>
+        /// API Key.
+        /// </summary>
+        public static IWebProxy Proxy = null;
+
         #endregion
 
         #region PRIVATE_PROPERTIES
@@ -404,6 +409,7 @@ namespace NiceHashBotLib
             try
             {
                 HttpWebRequest WReq = (HttpWebRequest)WebRequest.Create(URL);
+                if (Proxy != null) WReq.Proxy = Proxy;
                 WReq.Timeout = 60000;
                 WebResponse WResp = WReq.GetResponse();
                 Stream DataStream = WResp.GetResponseStream();

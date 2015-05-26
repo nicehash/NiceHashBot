@@ -12,6 +12,11 @@ namespace NiceHashBot
         public string APIKey;
         public string TwoFactorSecret;
 
+        public string ProxyHost;
+        public int ProxyPort;
+        public string ProxyUsername;
+        public string ProxyPassword;
+
         public static SettingsContainer Settings;
 
         public SettingsContainer()
@@ -19,6 +24,10 @@ namespace NiceHashBot
             APIID = 0;
             APIKey = "";
             TwoFactorSecret = "";
+            ProxyHost = "";
+            ProxyPort = 0;
+            ProxyUsername = "";
+            ProxyPassword = "";
         }
 
         public static void Initialize()

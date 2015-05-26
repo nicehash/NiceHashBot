@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using NiceHashBotLib;
+using System.Net;
 
 namespace NiceHashBot
 {
@@ -141,6 +142,10 @@ namespace NiceHashBot
                 SettingsContainer.Settings.APIID = FS.ID;
                 SettingsContainer.Settings.APIKey = FS.Key;
                 SettingsContainer.Settings.TwoFactorSecret = FS.TwoFASecret;
+                SettingsContainer.Settings.ProxyHost = FS.ProxyUsername;
+                SettingsContainer.Settings.ProxyPort = FS.ProxyPort;
+                SettingsContainer.Settings.ProxyUsername = FS.ProxyUsername;
+                SettingsContainer.Settings.ProxyPassword = FS.ProxyPassword;
                 SettingsContainer.Commit();
 
                 if (SettingsContainer.Settings.TwoFactorSecret.Length > 0)
@@ -150,6 +155,16 @@ namespace NiceHashBot
 
                 if (APIWrapper.Initialize(SettingsContainer.Settings.APIID.ToString(), SettingsContainer.Settings.APIKey))
                 {
+                    if (SettingsContainer.Settings.ProxyHost.Length > 0)
+                    {
+                        WebProxy proxy = new WebProxy(SettingsContainer.Settings.ProxyHost, SettingsContainer.Settings.ProxyPort);
+                        proxy.BypassProxyOnLocal = true;
+                        if (SettingsContainer.Settings.ProxyUsername.Length > 0)
+                        {
+                            proxy.Credentials = new NetworkCredential(SettingsContainer.Settings.ProxyUsername, SettingsContainer.Settings.ProxyPassword);
+                        }
+                        APIWrapper.Proxy = proxy;
+                    }
                     BalanceRefresh_Tick(sender, e);
                 }
             }
