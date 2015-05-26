@@ -135,7 +135,7 @@ namespace NiceHashBot
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FormSettings FS = new FormSettings(SettingsContainer.Settings.APIID, SettingsContainer.Settings.APIKey, SettingsContainer.Settings.TwoFactorSecret);
+            FormSettings FS = new FormSettings(SettingsContainer.Settings);
             if (FS.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 SettingsContainer.Settings.APIID = FS.ID;

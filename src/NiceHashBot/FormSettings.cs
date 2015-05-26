@@ -10,38 +10,34 @@ namespace NiceHashBot
 {
     public partial class FormSettings : Form
     {
-        public int ID;
-        public string Key;
-        public string TwoFASecret;
+        public int ID { get { return decimal.ToInt32(numericUpDown1.Value); } internal set { numericUpDown1.Value = value; } }
+        public string Key { get { return textBox1.Text; } internal set { textBox1.Text = value; } }
+        public string TwoFASecret { get { return textBox2.Text; } internal set { textBox2.Text = value; } }
 
-        public FormSettings(int OldID, string OldKey, string OldTwoFASecret)
+        public FormSettings(SettingsContainer OldSettings)
         {
             InitializeComponent();
 
-            numericUpDown1.Value = OldID;
-            textBox1.Text = OldKey;
-            textBox2.Text = OldTwoFASecret;
+            this.ID = OldSettings.APIID;
+            this.Key = OldSettings.APIKey;
+            this.TwoFASecret = OldSettings.TwoFactorSecret;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ID = decimal.ToInt32(numericUpDown1.Value);
-            if (ID == 0)
+            if (this.ID == 0)
             {
                 MessageBox.Show("Please, set API ID!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 numericUpDown1.Focus();
                 return;
             }
 
-            Key = textBox1.Text;
-            if (Key.Length == 0)
+            if (this.Key.Length == 0)
             {
                 MessageBox.Show("Please, set API Key!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 textBox1.Focus();
                 return;
             }
-
-            TwoFASecret = textBox2.Text;
 
             DialogResult = System.Windows.Forms.DialogResult.OK;
             Close();
