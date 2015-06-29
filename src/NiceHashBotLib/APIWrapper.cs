@@ -33,7 +33,7 @@ namespace NiceHashBotLib
         /// <summary>
         /// Total number of algorithms.
         /// </summary>
-        public readonly static int NUMBER_OF_ALGORITHMS = 13;
+        public readonly static int NUMBER_OF_ALGORITHMS = ALGORITHM_NAME.Length;
 
         /// <summary>
         /// Price decrease steps for all algorithms.

@@ -42,6 +42,12 @@ namespace NiceHashBot
             }
 
             TwoFASecret = textBox2.Text;
+            if (TwoFASecret.Length != 0 && TwoFASecret.Length != 16)
+            {
+                MessageBox.Show("Two Factor secret key needs to be exactly 16 characters!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                textBox2.Focus();
+                return;
+            }
 
             DialogResult = System.Windows.Forms.DialogResult.OK;
             Close();
