@@ -13,17 +13,17 @@ namespace NiceHashBotLib
         /// <summary>
         /// API Version compatible with.
         /// </summary>
-        public readonly static string API_VERSION_COMPATIBLE = "1.0.10";
+        public readonly static string API_VERSION_COMPATIBLE = "1.2.0";
 
         /// <summary>
         /// URLs for NiceHash services.
         /// </summary>
-        public readonly static string[] SERVICE_LOCATION = { "https://www.nicehash.com", "https://www.westhash.com" };
+        public readonly static string SERVICE_LOCATION = "https://www.nicehash.com";
 
         /// <summary>
         /// Names for NiceHash services.
         /// </summary>
-        public readonly static string[] SERVICE_NAME = { "NiceHash", "WestHash" };
+        public readonly static string[] SERVICE_NAME = { "Europe (NiceHash)", " USA (WestHash)" };
 
         /// <summary>
         /// Names for algorithms.
@@ -161,6 +161,20 @@ namespace NiceHashBotLib
                 {
                     CachedOList[ServiceLocation, Algorithm] = new CachedOrderList();
                     CachedOList[ServiceLocation, Algorithm].OrderList = GetOrders(ServiceLocation, Algorithm, "orders.get", false);
+
+                    // Get missing data for my orders
+                    List<Order> MyOrders = GetMyOrders(ServiceLocation, Algorithm);
+
+                    // Fill missing data
+                    foreach (Order O1 in MyOrders)
+                    {
+                        foreach (Order O2 in CachedOList[ServiceLocation, Algorithm].OrderList)
+                        {
+                            if (O2.ID == O1.ID)
+                                O2.BTCAvailable = O1.BTCAvailable;
+                        }
+                    }
+
                     CachedOList[ServiceLocation, Algorithm].ObtainTime = DateTime.Now;
                 }
 
@@ -381,7 +395,7 @@ namespace NiceHashBotLib
 
         private static T Request<T>(int ServiceLocation, string Method, bool AppendCredentials, Dictionary<string, string> Parameters)
         {
-            string URL = SERVICE_LOCATION[ServiceLocation] + "/api";
+            string URL = SERVICE_LOCATION + "/api";
 
             if (Method != null)
             {
@@ -391,6 +405,9 @@ namespace NiceHashBotLib
                     URL += "&id=" + APIID;
                     URL += "&key=" + APIKey;
                 }
+
+                // Append location
+                URL += "&location=" + ServiceLocation.ToString();
 
                 if (Parameters != null)
                 {
