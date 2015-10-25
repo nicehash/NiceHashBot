@@ -193,12 +193,17 @@ namespace NiceHashBot
         }
 
 
-        public static void Add(int SL, int Algo, double Price, double SpeedLimit, Pool PoolInfo, int OrderID, double StartPrice, double StartAmount, string HandlerFile)
+        public static bool Add(int SL, int Algo, double Price, double SpeedLimit, Pool PoolInfo, int OrderID, double StartPrice, double StartAmount, string HandlerFile)
         {
+            foreach (OrderContainer OC_ in OrderList)
+                if (OC_.ID == OrderID) return false;
+
             OrderContainer OC = new OrderContainer(SL, Algo, Price, SpeedLimit, PoolInfo, OrderID, StartPrice, StartAmount, HandlerFile);
             OC.Launch();
             OrderList.Add(OC);
             Commit();
+
+            return true;
         }
 
 

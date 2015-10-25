@@ -13,7 +13,7 @@ namespace NiceHashBotLib
         /// <summary>
         /// API Version compatible with.
         /// </summary>
-        public readonly static string API_VERSION_COMPATIBLE = "1.2.0";
+        public readonly static string API_VERSION_COMPATIBLE = "1.2.2";
 
         /// <summary>
         /// URLs for NiceHash services.
@@ -23,27 +23,42 @@ namespace NiceHashBotLib
         /// <summary>
         /// Names for NiceHash services.
         /// </summary>
-        public readonly static string[] SERVICE_NAME = { "Europe (NiceHash)", " USA (WestHash)" };
+        public readonly static string[] SERVICE_NAME = { "Europe (NiceHash)", "USA (WestHash)" };
 
         /// <summary>
         /// Names for algorithms.
         /// </summary>
-        public readonly static string[] ALGORITHM_NAME = { "Scrypt", "SHA256", "Scrypt-A.-Nf.", "X11", "X13", "Keccak", "X15", "Nist5", "NeoScrypt", "Lyra2RE", "WhirlpoolX", "Qubit", "Quark" };
+        public static string[] ALGORITHM_NAME;
 
         /// <summary>
         /// Total number of algorithms.
         /// </summary>
-        public readonly static int NUMBER_OF_ALGORITHMS = ALGORITHM_NAME.Length;
+        public static int NUMBER_OF_ALGORITHMS;
 
         /// <summary>
         /// Price decrease steps for all algorithms.
         /// </summary>
-        public readonly static double[] PRICE_DECREASE_STEP = { -0.001, -0.0001, -0.002, -0.001, -0.001, -0.0001, -0.001, -0.001, -0.01, -0.002, -0.0001, -0.0005, -0.001 };
+        public static double[] PRICE_DECREASE_STEP;
 
         /// <summary>
-        /// Price decrase interval - it is 10 minutes.
+        /// Minimal speed limit for order.
         /// </summary>
-        public readonly static TimeSpan PRICE_DECREASE_INTERVAL = new TimeSpan(0, 10, 1);
+        public static double[] MINIMAL_LIMIT;
+
+        /// <summary>
+        /// Algorithm multiplier used for limit (to get GH/s speed).
+        /// </summary>
+        public static double[] ALGORITHM_MULTIPLIER;
+
+        /// <summary>
+        /// Algorithm speed text.
+        /// </summary>
+        public static string[] SPEED_TEXT;
+
+        /// <summary>
+        /// Price decrase interval.
+        /// </summary>
+        public static TimeSpan PRICE_DECREASE_INTERVAL;
 
         /// <summary>
         /// API ID.
@@ -70,8 +85,8 @@ namespace NiceHashBotLib
         #region PRIVATE_PROPERTIES
 
         private static object CacheLock = new object();
-        private static CachedOrderList[,] CachedOList = new CachedOrderList[SERVICE_LOCATION.Length, NUMBER_OF_ALGORITHMS];
-        private static CachedStats[,] CachedSList = new CachedStats[SERVICE_LOCATION.Length, NUMBER_OF_ALGORITHMS];
+        private static CachedOrderList[,] CachedOList;
+        private static CachedStats[,] CachedSList;
 
         #endregion
 
@@ -120,7 +135,38 @@ namespace NiceHashBotLib
 
             LibConsole.WriteLine(LibConsole.TEXT_TYPE.INFO, "Provided ID and Key are correct!");
 
+
+            Result<APIBuyInfo> R = Request<Result<APIBuyInfo>>(0, "buy.info", false, null);
+            if (R == null)
+            {
+                LibConsole.WriteLine(LibConsole.TEXT_TYPE.ERROR, "Unable to get buy information. Service unavailable.");
+                return false;
+            }
+
+            PRICE_DECREASE_INTERVAL = new TimeSpan(0, 0, R.Data.DownStepTime);
+            ALGORITHM_NAME = new string[R.Data.Algorithms.Length];
+            PRICE_DECREASE_STEP = new double[R.Data.Algorithms.Length];
+            ALGORITHM_MULTIPLIER = new double[R.Data.Algorithms.Length];
+            MINIMAL_LIMIT = new double[R.Data.Algorithms.Length];
+            SPEED_TEXT = new string[R.Data.Algorithms.Length];
+            for (int i = 0; i < R.Data.Algorithms.Length; i++)
+            {
+                ALGORITHM_NAME[i] = R.Data.Algorithms[i].Name;
+                PRICE_DECREASE_STEP[i] = R.Data.Algorithms[i].PriceDownStep;
+                ALGORITHM_MULTIPLIER[i] = R.Data.Algorithms[i].Multiplier;
+                MINIMAL_LIMIT[i] = R.Data.Algorithms[i].MinimalLimit;
+                SPEED_TEXT[i] = R.Data.Algorithms[i].SpeedText;
+            }
+
+            NUMBER_OF_ALGORITHMS = ALGORITHM_NAME.Length;
+
+            CachedOList = new CachedOrderList[SERVICE_LOCATION.Length, NUMBER_OF_ALGORITHMS];
+            CachedSList = new CachedStats[SERVICE_LOCATION.Length, NUMBER_OF_ALGORITHMS];
+
+            LibConsole.WriteLine(LibConsole.TEXT_TYPE.INFO, "Buy information loaded.");
+
             ValidAuthorization = true;
+
             return true;
         }
 

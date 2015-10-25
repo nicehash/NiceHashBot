@@ -246,7 +246,7 @@ namespace NiceHashBotLib
             }
 
             // Do not increase price, if we already have price higher or equal compared to minimal price.
-            if (MyOrder.Price >= MinimalPrice) return false;
+            if (MyOrder.Price >= (MinimalPrice - 0.00001)) return false;
 
             if (MaxPrice >= MinimalPrice)
             {

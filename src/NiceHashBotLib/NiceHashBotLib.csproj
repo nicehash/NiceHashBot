@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="APIBalance.cs" />
+    <Compile Include="APIBuyInfo.cs" />
     <Compile Include="APIError.cs" />
     <Compile Include="APIMethodVersion.cs" />
     <Compile Include="APIOrdersGet.cs" />

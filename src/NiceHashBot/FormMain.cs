@@ -62,24 +62,18 @@ namespace NiceHashBot
             listView1.Items.Clear();
             for (int i = 0; i < Orders.Length; i++)
             {
+                int Algorithm = Orders[i].Algorithm;
                 ListViewItem LVI = new ListViewItem(APIWrapper.SERVICE_NAME[Orders[i].ServiceLocation]);
-                LVI.SubItems.Add(APIWrapper.ALGORITHM_NAME[Orders[i].Algorithm]);
+                LVI.SubItems.Add(APIWrapper.ALGORITHM_NAME[Algorithm]);
                 if (Orders[i].OrderStats != null)
                 {
                     LVI.SubItems.Add("#" + Orders[i].OrderStats.ID.ToString());
                     string PriceText = Orders[i].OrderStats.Price.ToString("F4") + " (" + Orders[i].MaxPrice.ToString("F4") + ")";
-                    if (Orders[i].Algorithm == 1)
-                        PriceText += " BTC/TH/Day";
-                    else
-                        PriceText += " BTC/GH/Day";
+                    PriceText += " BTC/" + APIWrapper.SPEED_TEXT[Algorithm] + "/Day";
                     LVI.SubItems.Add(PriceText);
                     LVI.SubItems.Add(Orders[i].OrderStats.BTCAvailable.ToString("F8"));
                     LVI.SubItems.Add(Orders[i].OrderStats.Workers.ToString());
-                    string SpeedText = "";
-                    if (Orders[i].Algorithm == 1)
-                        SpeedText = (Orders[i].OrderStats.Speed * 0.001).ToString("F4") + " (" + Orders[i].Limit.ToString("F2") + ") TH/s";
-                    else
-                        SpeedText = Orders[i].OrderStats.Speed.ToString("F4") + " (" + Orders[i].Limit.ToString("F2") + ") GH/s";
+                    string SpeedText = (Orders[i].OrderStats.Speed * APIWrapper.ALGORITHM_MULTIPLIER[Algorithm]).ToString("F4") + " (" + Orders[i].Limit.ToString("F2") + ") " + APIWrapper.SPEED_TEXT[Algorithm] + "/s";
                     LVI.SubItems.Add(SpeedText);
                     if (!Orders[i].OrderStats.Alive)
                         LVI.BackColor = Color.PaleVioletRed;
@@ -150,7 +144,12 @@ namespace NiceHashBot
 
                 if (APIWrapper.Initialize(SettingsContainer.Settings.APIID.ToString(), SettingsContainer.Settings.APIKey))
                 {
+                    createNewToolStripMenuItem.Enabled = true;
                     BalanceRefresh_Tick(sender, e);
+                }
+                else
+                {
+                    createNewToolStripMenuItem.Enabled = false;
                 }
             }
         }

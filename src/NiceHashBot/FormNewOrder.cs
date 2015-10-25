@@ -55,18 +55,10 @@ namespace NiceHashBot
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboBox2.SelectedIndex == 1)
-            {
-                label5.Text = "TH/s";
-                label8.Text = "BTC/TH/Day";
-                label11.Text = "BTC/TH/Day";
-            }
-            else
-            {
-                label5.Text = "GH/s";
-                label8.Text = "BTC/GH/Day";
-                label11.Text = "BTC/GH/Day";
-            }
+            int index = comboBox2.SelectedIndex;
+            label5.Text = APIWrapper.SPEED_TEXT[index] + "/s";
+            label8.Text = "BTC/" + APIWrapper.SPEED_TEXT[index] + "/Day";
+            label11.Text = "BTC/" + APIWrapper.SPEED_TEXT[index] + "/Day";
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -102,7 +94,12 @@ namespace NiceHashBot
 
             if (AdvancedOptionsShown)
             {
-                OrderContainer.Add(comboBox1.SelectedIndex, comboBox2.SelectedIndex, MaxPrice, Limit, Pools[comboBox3.SelectedIndex], OrderID, StartPrice, StartAmount, textBox1.Text);
+                if (!OrderContainer.Add(comboBox1.SelectedIndex, comboBox2.SelectedIndex, MaxPrice, Limit, Pools[comboBox3.SelectedIndex], OrderID, StartPrice, StartAmount, textBox1.Text))
+                {
+                    MessageBox.Show("Order already in list!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    numericUpDown3.Focus();
+                    return;
+                }
             }
             else
             {
