@@ -212,13 +212,15 @@ namespace NiceHashBotLib
                     List<Order> MyOrders = GetMyOrders(ServiceLocation, Algorithm);
 
                     // Fill missing data
-                    if (MyOrders!=null)
-                    foreach (Order O1 in MyOrders)
+                    if (MyOrders != null && CachedOList[ServiceLocation, Algorithm].OrderList != null)
                     {
-                        foreach (Order O2 in CachedOList[ServiceLocation, Algorithm].OrderList)
+                        foreach (Order O1 in MyOrders)
                         {
-                            if (O2.ID == O1.ID)
-                                O2.BTCAvailable = O1.BTCAvailable;
+                            foreach (Order O2 in CachedOList[ServiceLocation, Algorithm].OrderList)
+                            {
+                                if (O2.ID == O1.ID)
+                                    O2.BTCAvailable = O1.BTCAvailable;
+                            }
                         }
                     }
 
