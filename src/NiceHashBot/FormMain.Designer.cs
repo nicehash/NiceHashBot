@@ -49,6 +49,7 @@ namespace NiceHashBot
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.speedLimitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,7 +69,7 @@ namespace NiceHashBot
             this.settingsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(770, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(817, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -106,7 +107,7 @@ namespace NiceHashBot
             // 
             this.statusStrip1.Location = new System.Drawing.Point(0, 327);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(770, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(817, 22);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -117,7 +118,7 @@ namespace NiceHashBot
             this.toolStripLabel2});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(770, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(817, 25);
             this.toolStrip1.TabIndex = 4;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -144,14 +145,15 @@ namespace NiceHashBot
             this.columnHeader4,
             this.columnHeader5,
             this.columnHeader6,
-            this.columnHeader7});
+            this.columnHeader7,
+            this.columnHeader8});
             this.listView1.ContextMenuStrip = this.contextMenuStrip1;
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.FullRowSelect = true;
             this.listView1.Location = new System.Drawing.Point(0, 49);
             this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(770, 278);
+            this.listView1.Size = new System.Drawing.Size(817, 278);
             this.listView1.TabIndex = 2;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -178,18 +180,23 @@ namespace NiceHashBot
             // 
             // columnHeader5
             // 
-            this.columnHeader5.Text = "Remaining BTC";
+            this.columnHeader5.Text = "Paid BTC";
             this.columnHeader5.Width = 89;
             // 
             // columnHeader6
             // 
-            this.columnHeader6.Text = "Workers";
-            this.columnHeader6.Width = 52;
+            this.columnHeader6.Text = "Remaining BTC";
+            this.columnHeader6.Width = 89;
             // 
             // columnHeader7
             // 
-            this.columnHeader7.Text = "Speed (Limit)";
-            this.columnHeader7.Width = 138;
+            this.columnHeader7.Text = "Workers";
+            this.columnHeader7.Width = 52;
+            // 
+            // columnHeader8
+            // 
+            this.columnHeader8.Text = "Speed (Limit)";
+            this.columnHeader8.Width = 138;
             // 
             // contextMenuStrip1
             // 
@@ -241,7 +248,7 @@ namespace NiceHashBot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(770, 349);
+            this.ClientSize = new System.Drawing.Size(817, 349);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStrip1);
@@ -276,6 +283,7 @@ namespace NiceHashBot
         private ColumnHeader columnHeader5;
         private ColumnHeader columnHeader6;
         private ColumnHeader columnHeader7;
+        private ColumnHeader columnHeader8;
         private ToolStripMenuItem settingsToolStripMenuItem;
         private ToolStripLabel toolStripLabel1;
         private ToolStripLabel toolStripLabel2;

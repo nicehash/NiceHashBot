@@ -220,6 +220,7 @@ namespace NiceHashBotLib
                             {
                                 if (O2.ID == O1.ID)
                                     O2.BTCAvailable = O1.BTCAvailable;
+                                    O2.BTCPaid = O1.BTCPaid;
                             }
                         }
                     }

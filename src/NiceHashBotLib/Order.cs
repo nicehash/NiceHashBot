@@ -33,6 +33,12 @@ namespace NiceHashBotLib
         public double BTCAvailable;
 
         /// <summary>
+        /// Remaining BTC balance for this order.
+        /// </summary>
+        [JsonProperty(PropertyName = "btc_paid")]
+        public double BTCPaid;
+
+        /// <summary>
         /// Speed limit in GH/s (TH/s for algorithm 1 - SHA256). 0 means unlimited.
         /// </summary>
         [JsonProperty(PropertyName = "limit_speed")]
@@ -95,6 +101,7 @@ namespace NiceHashBotLib
             Algorithm = O.Algorithm;
             Alive = O.Alive;
             BTCAvailable = O.BTCAvailable;
+            BTCPaid = O.BTCPaid;
             SpeedLimit = O.SpeedLimit;
             Price = O.Price;
             Speed = O.Speed;
