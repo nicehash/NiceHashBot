@@ -214,14 +214,14 @@ namespace NiceHashBotLib
         {
             double TotalWantedSpeed = 0;
             int i;
-            double Multi = 1;
-            if (Algorithm == 1) Multi = 1000;
+            //double Multi = 1;
+            //if (Algorithm == 1) Multi = 1000;
             for (i = 0; i < AllOrders.Length; i++)
             {
                 if (AllOrders[i].SpeedLimit == 0)
                     TotalWantedSpeed += 1000000000;
                 else
-                    TotalWantedSpeed += AllOrders[i].SpeedLimit * Multi;
+                    TotalWantedSpeed += AllOrders[i].SpeedLimit / APIWrapper.ALGORITHM_MULTIPLIER[Algorithm];
 
                 if (TotalWantedSpeed > TotalSpeed) break;
             }
