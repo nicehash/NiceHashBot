@@ -63,7 +63,7 @@ public class HandlerClass
     /// Data structure used for serializing JSON response from CoinWarz. 
     /// It allows us to parse JSON with one line of code and easily access every data contained in JSON message.
     /// </summary>
-#pragma warning disable 0649
+	#pragma warning disable 0649
     class WhattomineResponse
     {
         public string name;
@@ -91,7 +91,7 @@ public class HandlerClass
         public bool lagging;
         public int timestamp;
     }
-#pragma warning restore 0649
+	#pragma warning restore 0649
 
 
     /// <summary>
