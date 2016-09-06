@@ -49,3 +49,7 @@ src/NHB.v12.suo
 *.pdb
 src/NiceHashBot/bin/*
 src/NiceHashBot/obj/*
+src/NiceHashBotLib/bin/*
+src/NiceHashBotLib/obj/*
+src/HandlerExample/bin/*
+src/HandlerExample/obj/*
