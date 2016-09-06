@@ -13,7 +13,7 @@ namespace NiceHashBotLib
         /// <summary>
         /// API Version compatible with.
         /// </summary>
-        public readonly static string API_VERSION_COMPATIBLE = "1.2.2";
+        public readonly static string API_VERSION_COMPATIBLE = "1.2.6";
 
         /// <summary>
         /// URLs for NiceHash services.
@@ -464,6 +464,8 @@ namespace NiceHashBotLib
                     foreach (KeyValuePair<string, string> Entry in Parameters)
                         URL += "&" + Entry.Key + "=" + Entry.Value;
                 }
+
+                URL = URL.Replace("#", "%23");
             }
 
             string ResponseData;

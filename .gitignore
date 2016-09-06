@@ -44,8 +44,8 @@ Temporary Items
 *.cache
 src/NHB.v12.suo
 *.exe
-src/NiceHashBot/bin/Debug/NiceHashBot.exe.config
 *.config
-src/NiceHashBot/bin/Debug/NiceHashBot.vshost.exe.manifest
-src/NiceHashBot/bin/Release/NiceHashBot.vshost.exe.manifest
-src/NiceHashBot/obj/x86/Debug/NiceHashBot.csproj.FileListAbsolute.txt
+*.dll
+*.pdb
+src/NiceHashBot/bin/*
+src/NiceHashBot/obj/*

@@ -20,7 +20,7 @@ namespace NiceHashBot
         public FormMain()
         {
             InitializeComponent();
-            this.Text = Application.ProductName + " [" + Application.ProductVersion + "]";
+            this.Text = Application.ProductName + " [v" + Application.ProductVersion + "]";
 
             FormPoolInstance = null;
             FormNewOrderInstance = null;
