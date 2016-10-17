@@ -20,9 +20,8 @@ namespace NiceHashBotLib
 
         public static void OpenConsole()
         {
-#if !MONO
-            AllocConsole();
-#endif
+            if (Type.GetType ("Mono.Runtime") == null)
+                AllocConsole();
         }
 
         public static void WriteLine(TEXT_TYPE Type, string Text)
