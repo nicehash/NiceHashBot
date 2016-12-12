@@ -62,6 +62,19 @@ namespace NiceHashBot
             HandlerDLL = HandlerFile;
         }
 
+        public OrderContainer(OrderContainer orderContainer)
+        {
+            ServiceLocation = orderContainer.ServiceLocation;
+            Algorithm = orderContainer.Algorithm;
+            MaxPrice = orderContainer.MaxPrice;
+            Limit = orderContainer.Limit;
+            PoolData = orderContainer.PoolData;
+            ID = 0;
+            StartingAmount = orderContainer.StartingAmount;
+            StartingPrice = orderContainer.StartingPrice;
+            HandlerDLL = orderContainer.HandlerDLL;
+        }
+
 
         public void Launch()
         {
