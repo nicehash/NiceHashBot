@@ -72,7 +72,7 @@ namespace NiceHashBot
                 {
                     if (tempTick % 120 == 0)
                     {
-                        if(Orders[i].OrderStats.Price > 1.1 * Orders[i].MaxPrice)
+                        if((Orders[i].OrderStats.Price > 1.1 * Orders[i].MaxPrice) && (Orders[i].OrderStats.Speed > 0))
                         {
                             OrderContainer copy = new OrderContainer(Orders[i]);
                             OrderContainer.Remove(i);
