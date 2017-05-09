@@ -46,12 +46,6 @@ public class HandlerClass
         double CPD = Response.block_reward * 24.0 * 3600.0 / HT;
         double C = CPD * ExchangeRate;
 
-        // Subtract service fees.
-        C -= 0.04 * C;
-
-        // Subtract minimal % profit we want to get.
-        C -= 0.01 * C;
-
         // Set new maximal price.
         MaxPrice = Math.Floor(C * 10000) / 10000;
 
