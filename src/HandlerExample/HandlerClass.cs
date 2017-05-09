@@ -23,7 +23,7 @@ public class HandlerClass
         if (OrderStats == null) return;
 
         // Retreive JSON data from API server. Replace URL with your own API request URL.
-        string JSONData = GetHTTPResponseInJSON("http://www.whattomine.com/coins/<COIN>.json");
+        string JSONData = GetHTTPResponseInJSON("http://www.whattomine.com/coins/1.json");
         if (JSONData == null) return;
 
         // Serialize returned JSON data.
