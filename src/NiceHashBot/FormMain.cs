@@ -16,6 +16,7 @@ namespace NiceHashBot
 
         private Timer TimerRefresh;
         private Timer BalanceRefresh;
+        private static int Tick = 0;
 
         public FormMain()
         {
@@ -55,6 +56,8 @@ namespace NiceHashBot
         {
             if (!APIWrapper.ValidAuthorization) return;
 
+            int tempTick = ++Tick;
+
             OrderContainer[] Orders = OrderContainer.GetAll();
             int Selected = -1;
             if (listView1.SelectedIndices.Count > 0)
@@ -67,19 +70,32 @@ namespace NiceHashBot
                 LVI.SubItems.Add(APIWrapper.ALGORITHM_NAME[Algorithm]);
                 if (Orders[i].OrderStats != null)
                 {
-                    LVI.SubItems.Add("#" + Orders[i].OrderStats.ID.ToString());
-                    string PriceText = Orders[i].OrderStats.Price.ToString("F4") + " (" + Orders[i].MaxPrice.ToString("F4") + ")";
-                    PriceText += " BTC/" + APIWrapper.SPEED_TEXT[Algorithm] + "/Day";
-                    LVI.SubItems.Add(PriceText);
-                    LVI.SubItems.Add(Orders[i].OrderStats.BTCAvailable.ToString("F8"));
-                    LVI.SubItems.Add(Orders[i].OrderStats.Workers.ToString());
-                    string SpeedText = (Orders[i].OrderStats.Speed * APIWrapper.ALGORITHM_MULTIPLIER[Algorithm]).ToString("F4") + " (" + Orders[i].Limit.ToString("F2") + ") " + APIWrapper.SPEED_TEXT[Algorithm] + "/s";
-                    LVI.SubItems.Add(SpeedText);
-                    if (!Orders[i].OrderStats.Alive)
-                        LVI.BackColor = Color.PaleVioletRed;
+                    if (tempTick % 120 == 0)
+                    {
+                        if((Orders[i].OrderStats.Price > 1.025 * Orders[i].MaxPrice) && (Orders[i].OrderStats.Speed > 0))
+                        {
+                            OrderContainer copy = new OrderContainer(Orders[i]);
+                            OrderContainer.Remove(i);
+                            OrderContainer.Add(copy.ServiceLocation, copy.Algorithm, copy.MaxPrice, copy.Limit, copy.PoolData, copy.ID, copy.StartingPrice, copy.StartingAmount, copy.HandlerDLL);
+                            Console.WriteLine("Order recreated");
+                        }
+                    }
                     else
-                        LVI.BackColor = Color.LightGreen;
-                    LVI.SubItems.Add("View competing orders");
+                    {
+                        LVI.SubItems.Add("#" + Orders[i].OrderStats.ID.ToString());
+                        string PriceText = Orders[i].OrderStats.Price.ToString("F4") + " (" + Orders[i].MaxPrice.ToString("F4") + ")";
+                        PriceText += " BTC/" + APIWrapper.SPEED_TEXT[Algorithm] + "/Day";
+                        LVI.SubItems.Add(PriceText);
+                        LVI.SubItems.Add(Orders[i].OrderStats.BTCAvailable.ToString("F8"));
+                        LVI.SubItems.Add(Orders[i].OrderStats.Workers.ToString());
+                        string SpeedText = (Orders[i].OrderStats.Speed * APIWrapper.ALGORITHM_MULTIPLIER[Algorithm]).ToString("F4") + " (" + Orders[i].Limit.ToString("F2") + ") " + APIWrapper.SPEED_TEXT[Algorithm] + "/s";
+                        LVI.SubItems.Add(SpeedText);
+                        if (!Orders[i].OrderStats.Alive)
+                            LVI.BackColor = Color.PaleVioletRed;
+                        else
+                            LVI.BackColor = Color.LightGreen;
+                        LVI.SubItems.Add("View competing orders");
+                    }
                 }
 
                 if (Selected >= 0 && Selected == i)
