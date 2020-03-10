@@ -6,7 +6,7 @@ NHB3 bot for automatic order management.
 - [How to compile?](#compile)
 - [Tips for programmers](#tips)
 
-![](C:\Users\bl4z\source\repos\NHB3\screenshots\00nhb3.png)
+![](https://raw.githubusercontent.com/nicehash/NiceHashBot/master/screenshots/00nhb3.png)
 
 # <a name="features"></a> Features
 
