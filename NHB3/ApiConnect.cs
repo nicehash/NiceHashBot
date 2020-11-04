@@ -236,17 +236,6 @@ namespace NHB3
             return new ApiSettings();
         }
 
-        public OrdersSettings readOrdersSettings()
-        {
-            String fileName = Path.Combine(Directory.GetCurrentDirectory(), "orders.json");
-            if (File.Exists(fileName))
-            {
-                OrdersSettings saved = JsonConvert.DeserializeObject<OrdersSettings>(File.ReadAllText(@fileName));
-                return saved;
-            }
-            return new OrdersSettings();
-        }
-
         public JObject getAlgo(string algo) {
             foreach (JObject obj in algorithms)
             {
@@ -263,8 +252,8 @@ namespace NHB3
             if (Enviorment == 1)
             {
                 return "https://api2.nicehash.com";
-            }
-            else if (Enviorment == 99) {
+            } else if (Enviorment == 99)
+            {
                 return "https://api-test-dev.nicehash.com";
             }
             return "https://api-test.nicehash.com";
@@ -279,19 +268,6 @@ namespace NHB3
             public string ApiSecret { get; set; }
 
             public int Enviorment { get; set; }
-        }
-
-        public class OrdersSettings 
-        { 
-            public List<OrderSettings> OrderList { get; set; }
-        }
-
-        public class OrderSettings 
-        { 
-            
-            public string Id { get; set; }
-
-            public string MaxPrice { get; set; }
         }
     }
 }

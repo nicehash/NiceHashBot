@@ -29,9 +29,9 @@ namespace NHB3
             InitializeComponent();
             this.Show();
             this.ac = ac;
-            
+
             this.currencyLbl.Text = ac.currency;
-            
+
             //pools dropdown
             this.comboPools.DisplayMember = "name";
             this.comboPools.ValueMember = "id";
@@ -61,8 +61,8 @@ namespace NHB3
             this.limitDetailsLbl.Text = "> " + this.algo["minSpeedLimit"] + " AND < " + this.algo["maxSpeedLimit"] + " OR 0 // no speed limit";
             this.amountDetailsLbl.Text = "> " + this.algo["minimalOrderAmount"];
 
-            this.tbLimit.Text = ""+this.algo["minSpeedLimit"];
-            this.tbAmount.Text = ""+this.algo["minimalOrderAmount"];
+            this.tbLimit.Text = "" + this.algo["minSpeedLimit"];
+            this.tbAmount.Text = "" + this.algo["minimalOrderAmount"];
 
             //filter pools
             this.comboPools.Items.Clear();
@@ -71,31 +71,36 @@ namespace NHB3
 
             foreach (JObject pool in ac.getPools(false))
             {
-                if (this.comboAlgorithm.SelectedItem.Equals(pool["algorithm"])) {
+                if (this.comboAlgorithm.SelectedItem.Equals(pool["algorithm"]))
+                {
                     this.comboPools.Items.Add(pool);
                 }
             }
 
-            if (!edit) {
+            if (!edit)
+            {
                 formDataUpdate();
             }
         }
 
         private void formChanged(object sender, EventArgs e)
         {
-            if (!edit) {
+            if (!edit)
+            {
                 formDataUpdate();
             }
         }
 
-        private void formDataUpdate() {
-            this.tbPrice.Enabled   = true;
+        private void formDataUpdate()
+        {
+            this.tbPrice.Enabled = true;
             this.btnCreate.Enabled = true;
-            this.lblPool.Visible   = false;
+            this.lblPool.Visible = false;
             this.lblCreate.Visible = false;
             this.lblErrorCreate.Visible = false;
 
-            if (this.comboPools.SelectedItem == null) {
+            if (this.comboPools.SelectedItem == null)
+            {
                 this.btnCreate.Enabled = false;
                 this.lblPool.Visible = true;
                 return;
@@ -104,7 +109,8 @@ namespace NHB3
             string algo = "" + this.comboAlgorithm.SelectedItem;
             string limit = "" + this.tbLimit.Text;
             string market = "EU";
-            if (this.rbUSA.Checked) {
+            if (this.rbUSA.Checked)
+            {
                 market = "USA";
             }
 
@@ -129,7 +135,7 @@ namespace NHB3
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
-            string algo = ""+this.comboAlgorithm.SelectedItem;
+            string algo = "" + this.comboAlgorithm.SelectedItem;
             string market = "EU";
             if (this.rbUSA.Checked)
             {
@@ -142,23 +148,24 @@ namespace NHB3
             }
             JObject pool = (JObject)this.comboPools.SelectedItem;
 
-            string price  = ""+this.tbPrice.Text;
-            string limit  = ""+this.tbLimit.Text;
-            string amount = ""+this.tbAmount.Text;
+            string price = "" + this.tbPrice.Text;
+            string limit = "" + this.tbLimit.Text;
+            string amount = "" + this.tbAmount.Text;
 
-            JObject order = ac.createOrder(algo, market, type, ""+pool["id"], price, limit, amount);
+            JObject order = ac.createOrder(algo, market, type, "" + pool["id"], price, limit, amount);
             if (order["id"] != null)
             {
                 this.lblErrorCreate.Visible = false;
                 setEditMode(order);
             }
-            else 
+            else
             {
                 this.lblErrorCreate.Visible = true;
             }
         }
 
-        public void setEditMode(JObject order) {
+        public void setEditMode(JObject order)
+        {
             edit = true;
 
             this.Text = "Edit order " + order["id"];
@@ -179,40 +186,49 @@ namespace NHB3
             this.tbLimit.Enabled = false;
             this.tbAmount.Enabled = false;
 
-            if (order["type"]["code"].Equals("FIXED")) {
+            if (order["type"]["code"].Equals("FIXED"))
+            {
                 this.tbNewLimit.Enabled = false;
                 this.tbNewPrice.Enabled = false;
                 this.btnUpdate.Enabled = false;
-            } else {
+            }
+            else
+            {
                 this.tbNewLimit.Enabled = true;
                 this.tbNewPrice.Enabled = true;
                 this.btnUpdate.Enabled = true;
             }
 
             //set values
-            this.tbId.Text = ""+order["id"];
+            this.tbId.Text = "" + order["id"];
             this.comboAlgorithm.SelectedItem = order["algorithm"]["algorithm"];
-            if ((""+order["market"]).Equals("EU"))
+            if (("" + order["market"]).Equals("EU"))
             {
                 this.rbEU.Checked = true;
                 this.rbUSA.Checked = false;
-            } else {
+            }
+            else
+            {
                 this.rbEU.Checked = false;
                 this.rbUSA.Checked = true;
             }
 
-            if ((""+order["type"]["code"]).Equals("STANDARD"))
+            if (("" + order["type"]["code"]).Equals("STANDARD"))
             {
                 this.rbStd.Checked = true;
                 this.rbFixed.Checked = false;
-            } else {
+            }
+            else
+            {
                 this.rbStd.Checked = false;
                 this.rbFixed.Checked = true;
             }
 
             int idx = 0;
-            foreach (JObject pool in this.comboPools.Items) {
-                if (order["pool"]["id"].Equals(pool["id"])) {
+            foreach (JObject pool in this.comboPools.Items)
+            {
+                if (order["pool"]["id"].Equals(pool["id"]))
+                {
                     break;
                 }
                 idx++;
@@ -222,7 +238,7 @@ namespace NHB3
             this.tbPrice.Text = "" + order["price"];
             this.tbLimit.Text = "" + order["limit"];
             this.tbAmount.Text = "" + order["amount"];
-            
+
             this.tbNewAmount.Text = "" + this.algo["minimalOrderAmount"];
             this.tbAvailableAmount.Text = "" + order["availableAmount"];
             this.tbNewPrice.Text = "" + order["price"];
@@ -270,50 +286,6 @@ namespace NHB3
             {
                 this.Close();
             }
-        }
-                
-        private void btnLoad_Click(object sender, EventArgs e)
-        {
-            string id = "" + this.tbId.Text;
-            ApiConnect.OrdersSettings cos = ac.readOrdersSettings();
-
-            foreach (var order in cos.OrderList) {
-                if (id.Equals(order.Id)) {
-                    this.tbMaxPrice.Text = ""+order.MaxPrice;
-                }
-            }
-        }
-
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            string id = "" + this.tbId.Text;
-
-            ApiConnect.OrdersSettings wos = ac.readOrdersSettings();
-            wos.OrderList = new List<ApiConnect.OrderSettings>();
-
-            ApiConnect.OrdersSettings cos = ac.readOrdersSettings();
-            
-            bool added = false;
-            foreach (var order in cos.OrderList)
-            {
-                if (id.Equals(order.Id))
-                {
-                    order.MaxPrice = this.tbMaxPrice.Text;
-                    added = true;
-                }
-                wos.OrderList.Add(order);
-            }
-
-            if (!added) {
-                ApiConnect.OrderSettings osNew = new ApiConnect.OrderSettings();
-                osNew.Id = id;
-                osNew.MaxPrice = this.tbMaxPrice.Text;
-                wos.OrderList.Add(osNew);
-            }
-
-            String fileName = Path.Combine(Directory.GetCurrentDirectory(), "orders.json");
-            File.WriteAllText(fileName, JsonConvert.SerializeObject(wos));
-            this.Close();
         }
     }
 }

@@ -58,30 +58,23 @@
             this.label16 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tbId = new System.Windows.Forms.TextBox();
-            this.amountDetailsLbl2 = new System.Windows.Forms.Label();
             this.tbAvailableAmount = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.limitDetailsLbl2 = new System.Windows.Forms.Label();
-            this.priceDetailsLbl2 = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnUpdate = new System.Windows.Forms.Button();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.btnLoad = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.tbMaxPrice = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lblCreate = new System.Windows.Forms.Label();
             this.lblPool = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lblErrorCreate = new System.Windows.Forms.Label();
+            this.amountDetailsLbl2 = new System.Windows.Forms.Label();
+            this.priceDetailsLbl2 = new System.Windows.Forms.Label();
+            this.limitDetailsLbl2 = new System.Windows.Forms.Label();
+            this.tbId = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.tabPage3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -351,9 +344,8 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Enabled = false;
-            this.tabControl1.Location = new System.Drawing.Point(12, 385);
+            this.tabControl1.Location = new System.Drawing.Point(12, 392);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(610, 147);
@@ -375,25 +367,6 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Refill order";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tbId
-            // 
-            this.tbId.Location = new System.Drawing.Point(156, 75);
-            this.tbId.Name = "tbId";
-            this.tbId.Size = new System.Drawing.Size(237, 26);
-            this.tbId.TabIndex = 32;
-            this.tbId.Visible = false;
-            // 
-            // amountDetailsLbl2
-            // 
-            this.amountDetailsLbl2.AutoSize = true;
-            this.amountDetailsLbl2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.amountDetailsLbl2.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.amountDetailsLbl2.Location = new System.Drawing.Point(399, 11);
-            this.amountDetailsLbl2.Name = "amountDetailsLbl2";
-            this.amountDetailsLbl2.Size = new System.Drawing.Size(63, 17);
-            this.amountDetailsLbl2.TabIndex = 31;
-            this.amountDetailsLbl2.Text = "[amount]";
             // 
             // tbAvailableAmount
             // 
@@ -430,28 +403,6 @@
             this.tabPage2.Text = "Edit order";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // limitDetailsLbl2
-            // 
-            this.limitDetailsLbl2.AutoSize = true;
-            this.limitDetailsLbl2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.limitDetailsLbl2.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.limitDetailsLbl2.Location = new System.Drawing.Point(399, 43);
-            this.limitDetailsLbl2.Name = "limitDetailsLbl2";
-            this.limitDetailsLbl2.Size = new System.Drawing.Size(55, 17);
-            this.limitDetailsLbl2.TabIndex = 31;
-            this.limitDetailsLbl2.Text = "[speed]";
-            // 
-            // priceDetailsLbl2
-            // 
-            this.priceDetailsLbl2.AutoSize = true;
-            this.priceDetailsLbl2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.priceDetailsLbl2.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.priceDetailsLbl2.Location = new System.Drawing.Point(399, 11);
-            this.priceDetailsLbl2.Name = "priceDetailsLbl2";
-            this.priceDetailsLbl2.Size = new System.Drawing.Size(47, 17);
-            this.priceDetailsLbl2.TabIndex = 31;
-            this.priceDetailsLbl2.Text = "[price]";
-            // 
             // btnCancel
             // 
             this.btnCancel.ForeColor = System.Drawing.Color.DarkRed;
@@ -472,68 +423,6 @@
             this.btnUpdate.Text = "Update";
             this.btnUpdate.UseVisualStyleBackColor = true;
             this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.btnSave);
-            this.tabPage3.Controls.Add(this.btnLoad);
-            this.tabPage3.Controls.Add(this.label5);
-            this.tabPage3.Controls.Add(this.label7);
-            this.tabPage3.Controls.Add(this.tbMaxPrice);
-            this.tabPage3.Location = new System.Drawing.Point(4, 29);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(602, 114);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Bot settings";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // btnSave
-            // 
-            this.btnSave.Location = new System.Drawing.Point(454, 72);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(140, 32);
-            this.btnSave.TabIndex = 36;
-            this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // btnLoad
-            // 
-            this.btnLoad.Location = new System.Drawing.Point(10, 72);
-            this.btnLoad.Name = "btnLoad";
-            this.btnLoad.Size = new System.Drawing.Size(140, 32);
-            this.btnLoad.TabIndex = 35;
-            this.btnLoad.Text = "Load";
-            this.btnLoad.UseVisualStyleBackColor = true;
-            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label5.Location = new System.Drawing.Point(399, 11);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(47, 17);
-            this.label5.TabIndex = 34;
-            this.label5.Text = "[price]";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 9);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(76, 20);
-            this.label7.TabIndex = 32;
-            this.label7.Text = "Max price";
-            // 
-            // tbMaxPrice
-            // 
-            this.tbMaxPrice.Location = new System.Drawing.Point(142, 6);
-            this.tbMaxPrice.Name = "tbMaxPrice";
-            this.tbMaxPrice.Size = new System.Drawing.Size(251, 26);
-            this.tbMaxPrice.TabIndex = 33;
             // 
             // groupBox1
             // 
@@ -590,6 +479,47 @@
             this.lblErrorCreate.Text = "Error creating order";
             this.lblErrorCreate.Visible = false;
             // 
+            // amountDetailsLbl2
+            // 
+            this.amountDetailsLbl2.AutoSize = true;
+            this.amountDetailsLbl2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.amountDetailsLbl2.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.amountDetailsLbl2.Location = new System.Drawing.Point(399, 11);
+            this.amountDetailsLbl2.Name = "amountDetailsLbl2";
+            this.amountDetailsLbl2.Size = new System.Drawing.Size(63, 17);
+            this.amountDetailsLbl2.TabIndex = 31;
+            this.amountDetailsLbl2.Text = "[amount]";
+            // 
+            // priceDetailsLbl2
+            // 
+            this.priceDetailsLbl2.AutoSize = true;
+            this.priceDetailsLbl2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.priceDetailsLbl2.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.priceDetailsLbl2.Location = new System.Drawing.Point(399, 11);
+            this.priceDetailsLbl2.Name = "priceDetailsLbl2";
+            this.priceDetailsLbl2.Size = new System.Drawing.Size(47, 17);
+            this.priceDetailsLbl2.TabIndex = 31;
+            this.priceDetailsLbl2.Text = "[price]";
+            // 
+            // limitDetailsLbl2
+            // 
+            this.limitDetailsLbl2.AutoSize = true;
+            this.limitDetailsLbl2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.limitDetailsLbl2.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.limitDetailsLbl2.Location = new System.Drawing.Point(399, 43);
+            this.limitDetailsLbl2.Name = "limitDetailsLbl2";
+            this.limitDetailsLbl2.Size = new System.Drawing.Size(55, 17);
+            this.limitDetailsLbl2.TabIndex = 31;
+            this.limitDetailsLbl2.Text = "[speed]";
+            // 
+            // tbId
+            // 
+            this.tbId.Location = new System.Drawing.Point(156, 75);
+            this.tbId.Name = "tbId";
+            this.tbId.Size = new System.Drawing.Size(237, 26);
+            this.tbId.TabIndex = 32;
+            this.tbId.Visible = false;
+            // 
             // OrderForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -625,8 +555,6 @@
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -681,11 +609,5 @@
         private System.Windows.Forms.Label limitDetailsLbl2;
         private System.Windows.Forms.Label priceDetailsLbl2;
         private System.Windows.Forms.TextBox tbId;
-        private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox tbMaxPrice;
-        private System.Windows.Forms.Button btnLoad;
-        private System.Windows.Forms.Button btnSave;
     }
 }
