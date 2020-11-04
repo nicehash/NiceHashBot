@@ -24,6 +24,7 @@ namespace NHB3
 
             //read algo settings
             string algosResponse = api.get("/main/api/v2/mining/algorithms", false);
+
             JObject aslgoObject = JsonConvert.DeserializeObject<JObject>(algosResponse);
             if (aslgoObject["error_id"] == null)
             {
@@ -33,6 +34,10 @@ namespace NHB3
 
         public JArray getMarket() {
             string marketResponse = api.get("/main/api/v2/public/orders/active2", false);
+            if (String.IsNullOrEmpty(marketResponse)) {
+                return new JArray();
+            }
+
             JObject marektObject = JsonConvert.DeserializeObject<JObject>(marketResponse);
             if (marektObject["error_id"] == null)
             {
@@ -43,8 +48,8 @@ namespace NHB3
 
         public bool settingsOk() {
             string accountsResponse = api.get("/main/api/v2/accounting/accounts2", true);
-            JObject accountsObject = JsonConvert.DeserializeObject<JObject>(accountsResponse);
 
+            JObject accountsObject = JsonConvert.DeserializeObject<JObject>(accountsResponse);
             if (accountsObject["error_id"] == null)
             {
                 return true;
@@ -54,13 +59,16 @@ namespace NHB3
 
         public JObject getBalance(string currency) {
             string accountsResponse = api.get("/main/api/v2/accounting/accounts2", true);
+
             JObject accountsObject = JsonConvert.DeserializeObject<JObject>(accountsResponse);
 
             if (accountsObject["error_id"] != null)
             {
                 //api call failed
                 Console.WriteLine("Error reading API ... {0}", accountsObject);
+                return null;
             }
+
             JArray currencies = accountsObject["currencies"] as JArray;
             foreach (JObject obj in currencies)
             {
@@ -228,6 +236,17 @@ namespace NHB3
             return new ApiSettings();
         }
 
+        public OrdersSettings readOrdersSettings()
+        {
+            String fileName = Path.Combine(Directory.GetCurrentDirectory(), "orders.json");
+            if (File.Exists(fileName))
+            {
+                OrdersSettings saved = JsonConvert.DeserializeObject<OrdersSettings>(File.ReadAllText(@fileName));
+                return saved;
+            }
+            return new OrdersSettings();
+        }
+
         public JObject getAlgo(string algo) {
             foreach (JObject obj in algorithms)
             {
@@ -245,6 +264,9 @@ namespace NHB3
             {
                 return "https://api2.nicehash.com";
             }
+            else if (Enviorment == 99) {
+                return "https://api-test-dev.nicehash.com";
+            }
             return "https://api-test.nicehash.com";
         }
 
@@ -259,5 +281,17 @@ namespace NHB3
             public int Enviorment { get; set; }
         }
 
+        public class OrdersSettings 
+        { 
+            public List<OrderSettings> OrderList { get; set; }
+        }
+
+        public class OrderSettings 
+        { 
+            
+            public string Id { get; set; }
+
+            public string MaxPrice { get; set; }
+        }
     }
 }

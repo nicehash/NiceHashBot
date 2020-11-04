@@ -31,6 +31,8 @@ namespace NHB3
             ac = new ApiConnect();
 
             ApiSettings saved = ac.readSettings();
+            OrdersSettings orders = ac.readOrdersSettings();
+
             if (saved.OrganizationID != null) {
                 ac.setup(saved);
 
@@ -100,6 +102,9 @@ namespace NHB3
 
         private void refreshOrders(bool fromThread)
         {
+            //read custom order settings
+            ApiConnect.OrdersSettings cos = ac.readOrdersSettings();
+
             if (ac.connected)
             {
                 orders = ac.getOrders();
@@ -125,6 +130,10 @@ namespace NHB3
                     cleanOrder.Add("spentPercent", "" + spent_factor.ToString("0.00")+ "%");
                     cleanOrder.Add("limit", "" + order["limit"]);
                     cleanOrder.Add("price", "" + order["price"]);
+
+                    //max price
+                    cleanOrder.Add("maxPrice", getMaxPrice("" + order["id"], cos));
+
                     cleanOrder.Add("rigsCount", "" + order["rigsCount"]);
                     cleanOrder.Add("acceptedCurrentSpeed", "" + order["acceptedCurrentSpeed"]);
                     cleanOrders.Add(cleanOrder);
@@ -146,6 +155,17 @@ namespace NHB3
                 dataGridView1.AllowUserToOrderColumns = true;
                 dataGridView1.AllowUserToResizeColumns = true;
             }
+        }
+
+        private string getMaxPrice(string id, ApiConnect.OrdersSettings cos) {
+            foreach (var order in cos.OrderList)
+            {
+                if (id.Equals(order.Id))
+                {
+                    return order.MaxPrice;
+                }
+            }
+            return "";
         }
 
         private void refreshMarket() {
@@ -197,7 +217,12 @@ namespace NHB3
             }
 
             toolStripStatusLabel1.Text = "Working";
+
+            //read order individual settings
+            ApiConnect.OrdersSettings cos = ac.readOrdersSettings();
+
             BotSettings saved = JsonConvert.DeserializeObject<BotSettings>(File.ReadAllText(@fileName));
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("bot iteration tasks {0} {1} {2}", saved.reffilOrder, saved.lowerPrice, saved.increasePrice);
 
             Control.CheckForIllegalCrossThreadCalls = false;
@@ -207,20 +232,23 @@ namespace NHB3
                 refreshMarket();
             }
 
-            //do refill??
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("orders to process: {0}", orders.Count);
 
+            //do refill??
             if (saved.reffilOrder) {
                 foreach (JObject order in orders)
                 {
                     float payed = float.Parse("" + order["payedAmount"], CultureInfo.InvariantCulture);
                     float available = float.Parse("" + order["availableAmount"], CultureInfo.InvariantCulture);
                     float spent_factor = payed/available*100;
+                    Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.WriteLine("?refill?; order {0}, payed {1}, available {2}, percent {3}", order["id"], payed, available, spent_factor.ToString("0.00"));
 
                     if (spent_factor > 90)
                     {
                         JObject algo = ac.getAlgo(""+order["algorithm"]["algorithm"]);
+                        Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.WriteLine("===> refill order for {0}", algo["minimalOrderAmount"]);
                         ac.refillOrder(""+order["id"], ""+algo["minimalOrderAmount"]);
                     }
@@ -233,17 +261,36 @@ namespace NHB3
                     string order_type = "" + order["type"]["code"];
                     if (order_type.Equals("STANDARD"))
                     {
+                        //get order custom settings
+                        String omp = getMaxPrice("" + order["id"], cos);
+                        float maxOrderPriceLimit = 0F;
+                        if (!String.IsNullOrEmpty(omp)) {
+                            maxOrderPriceLimit = float.Parse("" + omp, CultureInfo.InvariantCulture);
+                        }
+
                         JObject algo = ac.getAlgo("" + order["algorithm"]["algorithm"]);
                         float order_speed = float.Parse("" + order["acceptedCurrentSpeed"], CultureInfo.InvariantCulture);
+                        float rigs_count = float.Parse("" + order["rigsCount"], CultureInfo.InvariantCulture);
                         float order_price = float.Parse("" + order["price"], CultureInfo.InvariantCulture);
                         float price_step_down = float.Parse("" + algo["priceDownStep"], CultureInfo.InvariantCulture);
-                        Console.WriteLine("?adjust price?; order {0}, speed {1}, price {2}, step_down {3}", order["id"], order_speed, order_price, price_step_down);
 
-                        if (saved.increasePrice && order_speed == 0) {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("?adjust price?; order {0}, speed {1}, rigs {2}, price {3}, step_down {4}, max order limit {5}", order["id"], order_speed, rigs_count, order_price, price_step_down, maxOrderPriceLimit);
+
+                        if (saved.increasePrice && (order_speed == 0 || rigs_count == 0)) {
                             float new_price = (float)Math.Round(order_price + (price_step_down * -1), 4);
-                            Console.WriteLine("===> price up order to {0}", new_price);
-                            ac.updateOrder("" + order["algorithm"]["algorithm"], "" + order["id"], new_price.ToString(new CultureInfo("en-US")), "" + order["limit"]);
-                        } else if (saved.lowerPrice && order_speed > 0) {
+
+                            if (maxOrderPriceLimit > 0 && new_price > maxOrderPriceLimit) {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("===> price up denied - max limit enforced {0} {1}", new_price, maxOrderPriceLimit);
+                            } 
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                Console.WriteLine("===> price up order to {0}", new_price);
+                                ac.updateOrder("" + order["algorithm"]["algorithm"], "" + order["id"], new_price.ToString(new CultureInfo("en-US")), "" + order["limit"]);
+                            }
+                        } else if (saved.lowerPrice && (order_speed > 0 || rigs_count > 0)) {
                             Dictionary<string, float> market = getOrderPriceRangesForAlgoAndMarket("" + order["algorithm"]["algorithm"], "" + order["market"]);
                             var list = market.Keys.ToList();
                             list.Sort();
@@ -260,6 +307,7 @@ namespace NHB3
 
                             if (idx > 1) {
                                 float new_price = (float)Math.Round(order_price + price_step_down, 4);
+                                Console.ForegroundColor = ConsoleColor.Yellow;
                                 Console.WriteLine("===> price down order to {0}", new_price);
                                 ac.updateOrder("" + order["algorithm"]["algorithm"], "" + order["id"], new_price.ToString(new CultureInfo("en-US")), "" + order["limit"]);
                             }

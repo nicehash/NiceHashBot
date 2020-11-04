@@ -1,9 +1,12 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -267,6 +270,50 @@ namespace NHB3
             {
                 this.Close();
             }
+        }
+                
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            string id = "" + this.tbId.Text;
+            ApiConnect.OrdersSettings cos = ac.readOrdersSettings();
+
+            foreach (var order in cos.OrderList) {
+                if (id.Equals(order.Id)) {
+                    this.tbMaxPrice.Text = ""+order.MaxPrice;
+                }
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            string id = "" + this.tbId.Text;
+
+            ApiConnect.OrdersSettings wos = ac.readOrdersSettings();
+            wos.OrderList = new List<ApiConnect.OrderSettings>();
+
+            ApiConnect.OrdersSettings cos = ac.readOrdersSettings();
+            
+            bool added = false;
+            foreach (var order in cos.OrderList)
+            {
+                if (id.Equals(order.Id))
+                {
+                    order.MaxPrice = this.tbMaxPrice.Text;
+                    added = true;
+                }
+                wos.OrderList.Add(order);
+            }
+
+            if (!added) {
+                ApiConnect.OrderSettings osNew = new ApiConnect.OrderSettings();
+                osNew.Id = id;
+                osNew.MaxPrice = this.tbMaxPrice.Text;
+                wos.OrderList.Add(osNew);
+            }
+
+            String fileName = Path.Combine(Directory.GetCurrentDirectory(), "orders.json");
+            File.WriteAllText(fileName, JsonConvert.SerializeObject(wos));
+            this.Close();
         }
     }
 }

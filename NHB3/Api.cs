@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -81,6 +84,7 @@ namespace NHB3
                     sb.Append(segment);
                 }
             }
+            Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.Out.WriteLine("req: [" + sb.ToString() + "]");
             return sb.ToString();
         }
@@ -101,9 +105,14 @@ namespace NHB3
         private string srvrTime()
         {
             string timeResponse = this.get("/api/v2/time", false);
-            ServerTime serverTimeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<ServerTime>(timeResponse);
-            time = serverTimeObject.serverTime;
-            return time;
+            JObject timeObject = JsonConvert.DeserializeObject<JObject>(timeResponse);
+
+            if (timeObject["error_id"] == null)
+            {
+                this.time = "" + timeObject["serverTime"];
+                return this.time;
+            }
+            return "0";
         }
 
         public string get(string url, bool auth)
@@ -124,9 +133,13 @@ namespace NHB3
             }
 
             var response = client.Execute(request, RestSharp.Method.GET);
-            //Console.Out.WriteLine("res: [" + response.Content + "]");
-            var content = response.Content;
-            return content;
+            Console.Out.WriteLine("res: [" + response.Content + "]");
+
+            if (response.StatusCode != HttpStatusCode.OK) 
+            {
+                return "{error_id: -1}";
+            }
+            return response.Content;
         }
 
         public string post(string url, string payload, bool requestId)
@@ -156,9 +169,14 @@ namespace NHB3
             }
 
             var response = client.Execute(request, RestSharp.Method.POST);
-            //Console.Out.WriteLine("res: [" + response.Content + "]");
-            var content = response.Content;
-            return content;
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.Out.WriteLine("res: [" + response.Content + "]");
+
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                return "{error_id: -1}";
+            }
+            return response.Content;
         }
 
         public string delete(string url, bool requestId)
@@ -181,14 +199,14 @@ namespace NHB3
             }
 
             var response = client.Execute(request, RestSharp.Method.DELETE);
-            //Console.Out.WriteLine("res: [" + response.Content + "]");
-            var content = response.Content;
-            return content;
-        }
-    }
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.Out.WriteLine("res: [" + response.Content + "]");
 
-    public class ServerTime
-    {
-        public string serverTime { get; set; }
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                return "{error_id: -1}";
+            }
+            return response.Content;
+        }
     }
 }
