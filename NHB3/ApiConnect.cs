@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -14,6 +14,7 @@ namespace NHB3
     {
         Api api;
         public JArray algorithms; //hold algo settings
+        public JArray buy; //hold buy settings
         public JArray pools = new JArray();
         public bool connected = false;
         public string currency;
@@ -25,10 +26,19 @@ namespace NHB3
             //read algo settings
             string algosResponse = api.get("/main/api/v2/mining/algorithms", false);
 
-            JObject aslgoObject = JsonConvert.DeserializeObject<JObject>(algosResponse);
-            if (aslgoObject["error_id"] == null)
+            JObject algosObject = JsonConvert.DeserializeObject<JObject>(algosResponse);
+            if (algosObject["error_id"] == null)
             {
-                algorithms = aslgoObject["miningAlgorithms"] as JArray;
+                algorithms = algosObject["miningAlgorithms"] as JArray;
+            }
+
+            //read buy settings
+            string buyResponse = api.get("/main/api/v2/public/buy/info", false);
+
+            JObject buyObject = JsonConvert.DeserializeObject<JObject>(buyResponse);
+            if (buyObject["error_id"] == null)
+            {
+                buy = buyObject["miningAlgorithms"] as JArray;
             }
         }
 

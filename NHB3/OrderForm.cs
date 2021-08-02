@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace NHB3
 {
@@ -18,6 +19,7 @@ namespace NHB3
     {
         ApiConnect ac;
         JObject algo;
+        JObject buy;
 
         string lastFixedAlgo = "";
         string lastFixedMarket = "";
@@ -51,8 +53,53 @@ namespace NHB3
                 if (this.comboAlgorithm.SelectedItem.Equals(obj["algorithm"]))
                 {
                     this.algo = obj;
+                    break;
                 }
             }
+
+            //get algo settings
+            foreach (JObject obj in ac.buy)
+            {
+                if (this.algo["order"].Equals(obj["algo"]))
+                {
+                    this.buy = obj;
+                    break;
+                }
+            }
+
+            JArray markets = JArray.Parse(this.buy["enabledHashpowerMarkets"].ToString());
+            this.rbEU.Enabled = false;
+            this.rbEUN.Enabled = false;
+            this.rbUSA.Enabled = false;
+            this.rbUSAE.Enabled = false;
+            this.rbSA.Enabled = false;
+            this.rbASIA.Enabled = false;
+
+            foreach (String market in markets) {
+                if (market.Equals("EU")) {
+                    this.rbEU.Enabled = true;
+                } 
+                else if (market.Equals("EU_N"))
+                {
+                    this.rbEUN.Enabled = true;
+                } 
+                else if (market.Equals("USA"))
+                {
+                    this.rbUSA.Enabled = true;
+                } 
+                else if (market.Equals("USA_E"))
+                {
+                    this.rbUSAE.Enabled = true;
+                }
+                else if (market.Equals("SA"))
+                {
+                    this.rbSA.Enabled = true;
+                }
+                else if (market.Equals("ASIA"))
+                {
+                    this.rbASIA.Enabled = true;
+                }
+            }            
 
             //set lbls
             this.priceLbl.Text = ac.currency + "/" + this.algo["displayMarketFactor"] + "/day";
