@@ -250,7 +250,7 @@ namespace NHB3
                         Console.WriteLine("?adjust price?; order {0}, speed {1}, rigs {2}, price {3}, step_down {4}", order["id"], order_speed, rigs_count, order_price, price_step_down);
 
                         if (saved.increasePrice && (order_speed == 0 || rigs_count == 0)) {
-                            float new_price = (float)Math.Round(order_price + (price_step_down * -1), 4);
+                            float new_price = (float)Math.Round(order_price + (0.05), 4);
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("===> price up order to {0}", new_price);
                             ac.updateOrder("" + order["algorithm"]["algorithm"], "" + order["id"], new_price.ToString(new CultureInfo("en-US")), "" + order["limit"]);
