@@ -172,11 +172,13 @@ namespace NHB3
                 { "algorithm", algo },
                 { "amount", amount },
                 { "displayMarketFactor", (string)selAlgo["displayMarketFactor"] },
+                { "displayPriceFactor", (string)selAlgo["displayPriceFactor"] },
                 { "limit", limit },
                 { "market", market },
                 { "marketFactor", (string)selAlgo["marketFactor"] },
                 { "poolId", pool },
                 { "price", price },
+                { "priceFactor", (string)selAlgo["priceFactor"] },
                 { "type", type }
             };
             string newOrderResponse = api.post("/main/api/v2/hashpower/order", JsonConvert.SerializeObject(order), true);
@@ -211,7 +213,9 @@ namespace NHB3
                 { "price", price },
                 { "limit", limit },
                 { "displayMarketFactor", (string)selAlgo["displayMarketFactor"] },
-                { "marketFactor", (string)selAlgo["marketFactor"] }
+                { "marketFactor", (string)selAlgo["marketFactor"] },
+                { "displayPriceFactor", (string)selAlgo["displayPriceFactor"] },
+                { "priceFactor", (string)selAlgo["priceFactor"] }
             };
 
             string editOrderResponse = api.post("/main/api/v2/hashpower/order/" + id + "/updatePriceAndLimit", JsonConvert.SerializeObject(order), true);
