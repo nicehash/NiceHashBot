@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -21,7 +21,7 @@ namespace NHB3
         string currency = "TBTC";
         bool botRunning = false;
         JArray orders;
-        JArray market;
+        JObject market;
 
         System.Threading.Timer timer;
 
@@ -153,7 +153,8 @@ namespace NHB3
         private void refreshMarket() {
             if (ac.connected)
             {
-                market = ac.getMarket();
+                market = new JObject(); //flush
+                //market = ac.getMarket();
             }
         }
 
@@ -286,7 +287,13 @@ namespace NHB3
         {
             var prices = new Dictionary<string, float>();
 
-            foreach (JObject order in market)
+            //simple cache
+            if (market[oa] == null)
+            {
+                market[oa] = ac.getMarketForAlgo(oa);
+            }
+
+            foreach (JObject order in market[oa])
             {
                 string order_type   = "" + order["type"];
                 string order_algo   = "" + order["algorithm"];

@@ -56,6 +56,22 @@ namespace NHB3
             return new JArray();
         }
 
+        public JArray getMarketForAlgo(String algorithm)
+        {
+            string marketResponse = api.get("/main/api/v2/public/orders/active2?algorithm="+algorithm, false);
+            if (String.IsNullOrEmpty(marketResponse))
+            {
+                return new JArray();
+            }
+
+            JObject marektObject = JsonConvert.DeserializeObject<JObject>(marketResponse);
+            if (marektObject["error_id"] == null)
+            {
+                return marektObject["list"] as JArray;
+            }
+            return new JArray();
+        }
+
         public bool settingsOk() {
             string accountsResponse = api.get("/main/api/v2/accounting/accounts2", true);
 
